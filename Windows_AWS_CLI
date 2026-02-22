@@ -1,0 +1,100 @@
+PS C:\> msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi
+PS C:\> aws --version
+aws : The term 'aws' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ aws --version
++ ~~~
+    + CategoryInfo          : ObjectNotFound: (aws:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\> $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+PS C:\> Test-Path "C:\Program Files\Amazon\AWSCLIV2\aws.exe"
+True
+PS C:\> aws --version
+aws-cli/2.33.27 Python/3.13.11 Windows/11 exe/AMD64
+PS C:\>
+PS C:\> aws configure
+AWS Access Key ID [None]: 
+AWS Secret Access Key [None]: 
+Default region name [None]: ap-south-1
+Default output format [None]:
+PS C:\>
+PS C:\>
+PS C:\>
+PS C:\> cd E:\
+PS E:\> cd .\SQLBackups\
+PS E:\SQLBackups> ll
+ll : The term 'll' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ ll
++ ~~
+    + CategoryInfo          : ObjectNotFound: (ll:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS E:\SQLBackups> dir
+
+
+    Directory: E:\SQLBackups
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        22-02-2026  11.33 AM           2009 BackupToS3.ps1
+-a----        22-02-2026  11.22 AM              0 New Text Document.txt
+
+
+PS E:\SQLBackups> & "E:\SQLBackups\BackupToS3.ps1"
+& : File E:\SQLBackups\BackupToS3.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:3
++ & "E:\SQLBackups\BackupToS3.ps1"
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS E:\SQLBackups> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose you to the security risks described in the about_Execution_Policies help topic at
+https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): A
+PS E:\SQLBackups>
+PS E:\SQLBackups> dir
+
+
+    Directory: E:\SQLBackups
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        22-02-2026  11.33 AM           2009 BackupToS3.ps1
+-a----        22-02-2026  11.22 AM              0 New Text Document.txt
+
+
+PS E:\SQLBackups>
+PS E:\SQLBackups> & "E:\SQLBackups\BackupToS3.ps1"
+Starting backup for PRACTICE...
+Processed 552 pages for database 'PRACTICE', file 'PRACTICE' on file 1.
+Processed 2 pages for database 'PRACTICE', file 'PRACTICE_log' on file 1.
+BACKUP DATABASE successfully processed 554 pages in 0.016 seconds (270.263 MB/sec).
+Backup successful. Creating Password Protected Zip...
+
+7-Zip 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+
+Scanning the drive:
+1 file, 4640768 bytes (4532 KiB)
+
+Creating archive: E:\SQLBackups\PRACTICE_20260222_114925.zip
+
+Add new data to archive: 1 file, 4640768 bytes (4532 KiB)
+
+
+Files read from disk: 1
+Archive size: 380437 bytes (372 KiB)
+Everything is Ok
+Zip created. Uploading to S3...
+upload: .\PRACTICE_20260222_114925.zip to s3://mssql-db-bk-2019/PRACTICE_20260222_114925.zip
+Upload successful. Cleaning up local files...
+Done.
+PS E:\SQLBackups>
+
